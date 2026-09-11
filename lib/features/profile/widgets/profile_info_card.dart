@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
 class ProfileInfoCard extends StatelessWidget {
-  const ProfileInfoCard({super.key});
+  final String name;
+  final String email;
+  final String phone;
+  final String department;
+  final String section;
+
+  const ProfileInfoCard({
+    super.key,
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.department,
+    required this.section,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,64 +31,33 @@ class ProfileInfoCard extends StatelessWidget {
       child: Column(
         children: [
           _InfoRow(
-            icon: Icons.badge_outlined,
-            title: 'ID Number',
-            value: 'S210980',
+            icon: Icons.person_outline_rounded,
+            title: 'Name',
+            value: name,
           ),
-
-          const Divider(
-            height: 24,
-            color: Color(0xffEEEEF2),
+          const SizedBox(height: 18),
+          _InfoRow(
+            icon: Icons.email_outlined,
+            title: 'Email',
+            value: email,
           ),
-
+          const SizedBox(height: 18),
+          _InfoRow(
+            icon: Icons.phone_outlined,
+            title: 'Phone',
+            value: phone.isEmpty ? 'Not added' : phone,
+          ),
+          const SizedBox(height: 18),
           _InfoRow(
             icon: Icons.school_outlined,
             title: 'Department',
-            value: 'Computer Science & Engineering',
+            value: department,
           ),
-
-          const Divider(
-            height: 24,
-            color: Color(0xffEEEEF2),
-          ),
-
-          _InfoRow(
-            icon: Icons.calendar_today_outlined,
-            title: 'Year',
-            value: '4th Year',
-          ),
-
-          const Divider(
-            height: 24,
-            color: Color(0xffEEEEF2),
-          ),
-
-          _InfoRow(
-            icon: Icons.menu_book_outlined,
-            title: 'Semester',
-            value: '5th Semester',
-          ),
-
-          const Divider(
-            height: 24,
-            color: Color(0xffEEEEF2),
-          ),
-
+          const SizedBox(height: 18),
           _InfoRow(
             icon: Icons.groups_outlined,
             title: 'Section',
-            value: 'CSE - A',
-          ),
-
-          const Divider(
-            height: 24,
-            color: Color(0xffEEEEF2),
-          ),
-
-          _InfoRow(
-            icon: Icons.email_outlined,
-            title: 'College Email',
-            value: 'student@rguktsklm.ac.in',
+            value: section,
           ),
         ],
       ),
@@ -100,11 +82,11 @@ class _InfoRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 38,
-          height: 38,
+          width: 40,
+          height: 40,
           decoration: BoxDecoration(
-            color: const Color(0xffF1EEFF),
-            borderRadius: BorderRadius.circular(11),
+            color: const Color(0xffF4F4F7),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             icon,
@@ -112,9 +94,7 @@ class _InfoRow extends StatelessWidget {
             color: const Color(0xff5638D5),
           ),
         ),
-
         const SizedBox(width: 12),
-
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,22 +102,18 @@ class _InfoRow extends StatelessWidget {
               Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 12,
+                  fontSize: 11,
+                  color: Color(0xff8A8D96),
                   fontWeight: FontWeight.w500,
-                  color: Color(0xff8A8D95),
                 ),
               ),
-
               const SizedBox(height: 3),
-
               Text(
                 value,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 13.5,
                   color: Color(0xff292D36),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],

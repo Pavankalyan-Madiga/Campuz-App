@@ -1,13 +1,122 @@
 import 'package:flutter/material.dart';
+import 'package:mycamps/features/auth/screens/login_screen.dart';
+import 'package:mycamps/features/profile/account/change_password_screen.dart';
+import 'package:mycamps/features/profile/account/edit_profile_screen.dart';
+import 'package:mycamps/features/profile/account/notifications_screen.dart';
+import 'quick/schedule/schedule_screen.dart';
 
-import 'widgets/profile_header.dart';
-import 'widgets/profile_info_card.dart';
-import 'widgets/profile_stats.dart';
-import 'widgets/profile_action_tile.dart';
-import 'widgets/profile_account_section.dart';
+import 'package:mycamps/features/profile/widgets/profile_header.dart';
+import 'package:mycamps/features/profile/widgets/profile_info_card.dart';
+import 'package:mycamps/features/profile/widgets/profile_stats.dart';
+import 'package:mycamps/features/profile/widgets/profile_action_tile.dart';
+import 'package:mycamps/features/profile/widgets/profile_account_section.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String studentName = 'Pavankalyan Madiga';
+  String email = 'student@rguktsklm.ac.in';
+  String phone = '';
+  String department = 'Computer Science & Engineering';
+  String section = 'CSE-A';
+
+  Future<void> _editProfile() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfileScreen(
+          name: studentName,
+          email: email,
+          phone: phone,
+          department: department,
+          section: section,
+        ),
+      ),
+    );
+
+    if (result != null && result is Map<String, String>) {
+      setState(() {
+        studentName = result['name'] ?? studentName;
+        email = result['email'] ?? email;
+        phone = result['phone'] ?? phone;
+        department = result['department'] ?? department;
+        section = result['section'] ?? section;
+      });
+    }
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text(
+            'Logout',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          content: const Text(
+            'Are you sure you want to logout?',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xff666871),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Color(0xff666871),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginScreen(),
+                  ),
+                  (route) => false,
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xff5638D5),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                'Logout',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +129,16 @@ class ProfileScreen extends StatelessWidget {
 
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 30),
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(
+                  20,
+                  8,
+                  20,
+                  30,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Profile
                     Center(
                       child: Column(
                         children: [
@@ -32,174 +146,190 @@ class ProfileScreen extends StatelessWidget {
                             width: 92,
                             height: 92,
                             decoration: BoxDecoration(
+                              color: const Color(0xff5638D5),
                               shape: BoxShape.circle,
-                              color: const Color(0xffEDE9FE),
                               border: Border.all(
-                                color: const Color(0xffD8D0FA),
-                                width: 2,
+                                color: Colors.white,
+                                width: 4,
                               ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.08),
+                                  blurRadius: 15,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
                             ),
-                            child: const Icon(
-                              Icons.person_rounded,
-                              size: 52,
-                              color: Color(0xff5638D5),
+                            child: Center(
+                              child: Text(
+                                _getInitials(studentName),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
                             ),
                           ),
 
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 14),
 
-                          const Text(
-                            'Pavankalyan Madiga',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 22,
+                          Text(
+                            studentName,
+                            style: const TextStyle(
+                              fontSize: 21,
                               fontWeight: FontWeight.w700,
                               color: Color(0xff17171C),
                             ),
+                            textAlign: TextAlign.center,
                           ),
 
                           const SizedBox(height: 5),
 
                           const Text(
-                            'Student • CSE',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff777B85),
-                            ),
-                          ),
-
-                          const SizedBox(height: 4),
-
-                          const Text(
-                            '2027 Batch',
+                            'Student • 2027 Batch',
                             style: TextStyle(
                               fontSize: 13,
-                              color: Color(0xff999CA4),
+                              color: Color(0xff858892),
                             ),
                           ),
                         ],
                       ),
                     ),
 
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 30),
 
                     const Text(
                       'Academic Information',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff17171C),
+                        color: Color(0xff202124),
                       ),
                     ),
 
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 14),
 
-                    const ProfileInfoCard(),
+                    ProfileInfoCard(
+                      name: studentName,
+                      email: email,
+                      phone: phone,
+                      department: department,
+                      section: section,
+                    ),
 
-                    const SizedBox(height: 22),
+                    const SizedBox(height: 24),
 
                     const ProfileStats(),
 
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 28),
 
                     const Text(
                       'Quick Actions',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff17171C),
+                        color: Color(0xff202124),
                       ),
+                    ),
+
+                    const SizedBox(height: 14),
+
+                    ProfileActionTile(
+                      icon: Icons.calendar_month_outlined,
+                      title: 'My Schedule',
+                      subtitle: 'View your class timetable',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const ScheduleScreen(),
+                          ),
+                        );
+                      },
                     ),
 
                     const SizedBox(height: 12),
 
                     ProfileActionTile(
-                      icon: Icons.calendar_month_rounded,
-                      title: 'My Schedule',
-                      subtitle: 'View your class schedule',
-                      onTap: () {
-                        // Navigate to ScheduleScreen
-                      },
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    ProfileActionTile(
-                      icon: Icons.menu_book_rounded,
+                      icon: Icons.fact_check_outlined,
                       title: 'Attendance',
                       subtitle: 'Check your attendance',
-                      onTap: () {
-                        // Navigate to AttendanceScreen
-                      },
+                      onTap: () {},
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 12),
 
                     ProfileActionTile(
-                      icon: Icons.bar_chart_rounded,
+                      icon: Icons.assessment_outlined,
                       title: 'Results',
-                      subtitle: 'View your academic results',
-                      onTap: () {
-                        // Navigate to ResultsScreen
-                      },
+                      subtitle: 'View academic results',
+                      onTap: () {},
                     ),
 
-                    const SizedBox(height: 10),
-
-                    ProfileActionTile(
-                      icon: Icons.campaign_rounded,
-                      title: 'Campus Feed',
-                      subtitle: 'See campus updates',
-                      onTap: () {
-                        // Navigate to CampusFeedScreen
-                      },
-                    ),
-
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 28),
 
                     const Text(
                       'Account',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff17171C),
+                        color: Color(0xff202124),
                       ),
                     ),
 
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 14),
 
-                    const ProfileAccountSection(),
+                    ProfileAccountSection(
+                      onEdit: _editProfile,
+                      onNotifications: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const NotificationsScreen(),
+                          ),
+                        );
+                      },
+                      onChangePassword: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const ChangePasswordScreen(),
+                          ),
+                        );
+                      },
+                    ),
 
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 24),
 
                     SizedBox(
                       width: double.infinity,
                       height: 52,
                       child: OutlinedButton.icon(
                         onPressed: () {
-                          // Logout
+                          _showLogoutDialog(context);
                         },
                         icon: const Icon(
                           Icons.logout_rounded,
-                          color: Color(0xffD64545),
-                          size: 21,
+                          size: 20,
                         ),
                         label: const Text(
                           'Logout',
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xffD64545),
                           ),
                         ),
                         style: OutlinedButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          foregroundColor: const Color(0xffDC2626),
                           side: const BorderSide(
-                            color: Color(0xffF0CACA),
+                            color: Color(0xffF1B8B8),
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                         ),
                       ),
@@ -212,5 +342,19 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getInitials(String name) {
+    final parts = name.trim().split(' ');
+
+    if (parts.isEmpty) {
+      return 'P';
+    }
+
+    if (parts.length == 1) {
+      return parts[0][0].toUpperCase();
+    }
+
+    return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
   }
 }

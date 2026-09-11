@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-
 import 'package:mycamps/features/clubs/screens/clubs_screen.dart';
 import 'package:mycamps/features/leave/screens/leave_requests_screen.dart';
+import 'package:mycamps/features/placement/placement_screen.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
+  final int selectedIndex;
+  final ValueChanged<int> onItemSelected;
+
+  const AppDrawer({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
 
   static const Color primary = Color(0xff4A2ACF);
   static const Color background = Color(0xffF8F8FB);
@@ -20,10 +27,6 @@ class AppDrawer extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            // =========================================================
-            // PROFILE HEADER
-            // =========================================================
-
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(
@@ -52,9 +55,7 @@ class AppDrawer extends StatelessWidget {
                       color: primary,
                     ),
                   ),
-
                   const SizedBox(height: 14),
-
                   const Text(
                     'Pavankalyan Madiga',
                     textAlign: TextAlign.center,
@@ -64,9 +65,7 @@ class AppDrawer extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-
                   const SizedBox(height: 5),
-
                   const Text(
                     'ID : S210980',
                     style: TextStyle(
@@ -75,9 +74,7 @@ class AppDrawer extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-
                   const SizedBox(height: 9),
-
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -100,10 +97,6 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
 
-            // =========================================================
-            // MENU
-            // =========================================================
-
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(
@@ -115,30 +108,25 @@ class AppDrawer extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ===================================================
-                    // ACADEMIC
-                    // ===================================================
-
-                    _sectionTitle('ACADEMIC'),
+                    _sectionTitle('QUICK ACTIONS'),
 
                     _menuItem(
-                      context,
                       icon: Icons.bar_chart_rounded,
                       title: 'Attendance',
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                     ),
 
                     _menuItem(
-                      context,
                       icon: Icons.account_balance_wallet_outlined,
                       title: 'Fees',
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                     ),
 
-                    // ===================================================
-                    // LEAVE REQUESTS
-                    // ===================================================
-
                     _menuItem(
-                      context,
                       icon: Icons.assignment_outlined,
                       title: 'Leave Requests',
                       badge: '2',
@@ -157,35 +145,25 @@ class AppDrawer extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    // ===================================================
-                    // EXPLORE MORE
-                    // ===================================================
-
                     _sectionTitle('EXPLORE MORE'),
 
-                    // Placement
                     _menuItem(
-                      context,
                       icon: Icons.work_outline_rounded,
                       title: 'Placement',
                       onTap: () {
                         Navigator.pop(context);
 
-                        // Add PlacementScreen navigation here
-                        //
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) =>
-                        //         const PlacementScreen(),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const PlacementScreen(),
+                          ),
+                        );
                       },
                     ),
 
-                    // Clubs
                     _menuItem(
-                      context,
                       icon: Icons.groups_rounded,
                       title: 'Clubs',
                       onTap: () {
@@ -203,31 +181,27 @@ class AppDrawer extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    // ===================================================
-                    // ACCOUNT
-                    // ===================================================
-
                     _sectionTitle('ACCOUNT'),
 
                     _menuItem(
-                      context,
                       icon: Icons.settings_outlined,
                       title: 'Settings',
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                     ),
 
                     _menuItem(
-                      context,
                       icon: Icons.help_outline_rounded,
                       title: 'Help & Support',
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                     ),
                   ],
                 ),
               ),
             ),
-
-            // =========================================================
-            // LOGOUT
-            // =========================================================
 
             Padding(
               padding: const EdgeInsets.fromLTRB(
@@ -243,9 +217,7 @@ class AppDrawer extends StatelessWidget {
                     thickness: 1,
                     color: Color(0xffE5E5EA),
                   ),
-
                   const SizedBox(height: 10),
-
                   InkWell(
                     borderRadius: BorderRadius.circular(14),
                     onTap: () {
@@ -276,9 +248,7 @@ class AppDrawer extends StatelessWidget {
                               size: 20,
                             ),
                           ),
-
                           const SizedBox(width: 12),
-
                           const Expanded(
                             child: Text(
                               'Logout',
@@ -289,7 +259,6 @@ class AppDrawer extends StatelessWidget {
                               ),
                             ),
                           ),
-
                           const Icon(
                             Icons.chevron_right_rounded,
                             color: Color(0xffE57373),
@@ -307,10 +276,6 @@ class AppDrawer extends StatelessWidget {
       ),
     );
   }
-
-  // ===============================================================
-  // SECTION TITLE
-  // ===============================================================
 
   Widget _sectionTitle(String title) {
     return Padding(
@@ -330,29 +295,23 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  // ===============================================================
-  // MENU ITEM
-  // ===============================================================
-
-  Widget _menuItem(
-    BuildContext context, {
+  Widget _menuItem({
     required IconData icon,
     required String title,
     String? badge,
+    bool isSelected = false,
     VoidCallback? onTap,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 4,
-      ),
+      padding: const EdgeInsets.only(bottom: 4),
       child: Material(
-        color: Colors.transparent,
+        color: isSelected
+            ? primary.withOpacity(0.08)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(14),
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
-          onTap: onTap ??
-              () {
-                Navigator.pop(context);
-              },
+          onTap: onTap,
           child: SizedBox(
             height: 52,
             child: Padding(
@@ -361,14 +320,14 @@ class AppDrawer extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  // Icon container
                   Container(
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: primary.withOpacity(0.08),
-                      borderRadius:
-                          BorderRadius.circular(12),
+                      color: isSelected
+                          ? primary.withOpacity(0.14)
+                          : primary.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
                       icon,
@@ -376,38 +335,31 @@ class AppDrawer extends StatelessWidget {
                       color: primary,
                     ),
                   ),
-
                   const SizedBox(width: 13),
-
-                  // Title
                   Expanded(
                     child: Text(
                       title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: textDark,
                         fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: isSelected
+                            ? FontWeight.w700
+                            : FontWeight.w600,
                       ),
                     ),
                   ),
-
-                  // Badge
                   if (badge != null)
                     Container(
-                      margin: const EdgeInsets.only(
-                        right: 8,
-                      ),
-                      padding:
-                          const EdgeInsets.symmetric(
+                      margin: const EdgeInsets.only(right: 8),
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 8,
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
                         color: const Color(0xffffe9e9),
-                        borderRadius:
-                            BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         badge,
@@ -418,7 +370,6 @@ class AppDrawer extends StatelessWidget {
                         ),
                       ),
                     ),
-
                   const Icon(
                     Icons.chevron_right_rounded,
                     size: 21,
@@ -432,10 +383,6 @@ class AppDrawer extends StatelessWidget {
       ),
     );
   }
-
-  // ===============================================================
-  // LOGOUT DIALOG
-  // ===============================================================
 
   void _showLogoutDialog(BuildContext context) {
     showDialog(
@@ -473,7 +420,6 @@ class AppDrawer extends StatelessWidget {
                 ),
               ),
             ),
-
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);

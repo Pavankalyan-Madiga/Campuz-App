@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ProfileAccountSection extends StatelessWidget {
-  const ProfileAccountSection({super.key});
+  final VoidCallback? onEdit;
+  final VoidCallback? onNotifications;
+  final VoidCallback? onChangePassword;
+
+  const ProfileAccountSection({
+    super.key,
+    this.onEdit,
+    this.onNotifications,
+    this.onChangePassword,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,54 +28,29 @@ class ProfileAccountSection extends StatelessWidget {
           _AccountTile(
             icon: Icons.edit_outlined,
             title: 'Edit Profile',
-            onTap: () {
-              // Open Edit Profile
-            },
+            onTap: onEdit,
           ),
-
           const Divider(
             height: 1,
             indent: 65,
             endIndent: 15,
             color: Color(0xffEEEEF2),
           ),
-
           _AccountTile(
             icon: Icons.notifications_none_rounded,
             title: 'Notifications',
-            onTap: () {
-              // Open Notifications
-            },
+            onTap: onNotifications,
           ),
-
           const Divider(
             height: 1,
             indent: 65,
             endIndent: 15,
             color: Color(0xffEEEEF2),
           ),
-
           _AccountTile(
             icon: Icons.lock_outline_rounded,
             title: 'Change Password',
-            onTap: () {
-              // Open Change Password
-            },
-          ),
-
-          const Divider(
-            height: 1,
-            indent: 65,
-            endIndent: 15,
-            color: Color(0xffEEEEF2),
-          ),
-
-          _AccountTile(
-            icon: Icons.help_outline_rounded,
-            title: 'Help & Support',
-            onTap: () {
-              // Open Help & Support
-            },
+            onTap: onChangePassword,
           ),
         ],
       ),
@@ -87,49 +71,49 @@ class _AccountTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 14,
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: const Color(0xffF4F4F7),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                icon,
-                size: 20,
-                color: const Color(0xff565962),
-              ),
-            ),
-
-            const SizedBox(width: 12),
-
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff292D36),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 15,
+            vertical: 14,
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xffF4F4F7),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  icon,
+                  size: 20,
+                  color: const Color(0xff565962),
                 ),
               ),
-            ),
-
-            const Icon(
-              Icons.chevron_right_rounded,
-              size: 22,
-              color: Color(0xff9A9DA5),
-            ),
-          ],
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff292D36),
+                  ),
+                ),
+              ),
+              const Icon(
+                Icons.chevron_right_rounded,
+                size: 22,
+                color: Color(0xff9A9DA5),
+              ),
+            ],
+          ),
         ),
       ),
     );

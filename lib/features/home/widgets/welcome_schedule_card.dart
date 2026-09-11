@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mycamps/features/schedule/screens/schedule_screen.dart';
+
+
+import '../../profile/quick/schedule/schedule_screen.dart';
+
 
 class WelcomeScheduleCard extends StatelessWidget {
   const WelcomeScheduleCard({super.key});

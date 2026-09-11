@@ -29,15 +29,21 @@ class AnnouncementCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.all(18),
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xffEEEEF3),
+          color: const Color(0xffEEEEF2),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.025),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,51 +52,64 @@ class AnnouncementCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 48,
-                height: 48,
-                alignment: Alignment.center,
+                width: 44,
+                height: 44,
                 decoration: BoxDecoration(
                   color: avatarColor,
                   shape: BoxShape.circle,
                 ),
+                alignment: Alignment.center,
                 child: Text(
                   initials,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: subjectTextColor,
-                  ),
-                ),
-              ),
-
-              const SizedBox(width: 14),
-
-              Expanded(
-                child: Text(
-                  teacher,
                   style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xff555961),
                   ),
                 ),
               ),
-
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 7,
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      teacher,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff272A30),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 9,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: subjectColor,
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      child: Text(
+                        subject,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.4,
+                          color: subjectTextColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                decoration: BoxDecoration(
-                  color: subjectColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  subject,
-                  style: TextStyle(
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                    color: subjectTextColor,
-                  ),
+              ),
+              Text(
+                time,
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: Color(0xff9CA0A8),
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
@@ -101,71 +120,70 @@ class AnnouncementCard extends StatelessWidget {
           Text(
             message,
             style: const TextStyle(
-              fontSize: 14,
-              height: 1.5,
-              color: Color(0xff414650),
+              fontSize: 13.5,
+              height: 1.55,
+              color: Color(0xff555A63),
             ),
           ),
-
-          if (showDownload) ...[
-            const SizedBox(height: 14),
-
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xffF8F9FC),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.picture_as_pdf_outlined,
-                    color: Color(0xffD75B62),
-                  ),
-
-                  const SizedBox(width: 10),
-
-                  Expanded(
-                    child: Text(
-                      tag,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-
-                  const Icon(
-                    Icons.download_rounded,
-                    color: Color(0xff5146D8),
-                  ),
-                ],
-              ),
-            ),
-          ],
 
           const SizedBox(height: 14),
 
           Row(
             children: [
-              Text(
-                time,
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: Color(0xffA3A8B0),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 7,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xffF5F5F7),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        showDownload
+                            ? Icons.picture_as_pdf_rounded
+                            : Icons.info_outline_rounded,
+                        size: 14,
+                        color: showDownload
+                            ? const Color(0xffC14A4A)
+                            : const Color(0xff777C84),
+                      ),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          tag,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff6C7078),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-
-              const SizedBox(width: 12),
-
-              Text(
-                tag,
-                style: TextStyle(
-                  fontSize: 11,
-                  color: subjectTextColor,
-                  fontWeight: FontWeight.w600,
+              if (showDownload) ...[
+                const SizedBox(width: 8),
+                Container(
+                  height: 32,
+                  width: 32,
+                  decoration: BoxDecoration(
+                    color: const Color(0xffEEEAFE),
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                  child: const Icon(
+                    Icons.download_rounded,
+                    size: 17,
+                    color: Color(0xff5638D5),
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         ],
