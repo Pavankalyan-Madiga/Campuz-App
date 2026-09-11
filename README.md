@@ -229,7 +229,7 @@ flutter doctor
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Campuz.git
+git clone https://github.com/Pavankalyan-Madiga/Campuz.git
 ```
 
 Navigate to the project:
